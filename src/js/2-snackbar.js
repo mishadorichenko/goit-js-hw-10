@@ -14,9 +14,8 @@ function submitHandler(event) {
   const state = form.state.value;
 
   const promise = new Promise((resolve, reject) => {
-    if (delay && state === 'fulfilled') {
-      setTimeout(() => {
-        console.log('resolve');
+    setTimeout(() => {
+      if (state === 'fulfilled') {
         resolve(
           iziToast.success({
             theme: 'dark',
@@ -28,21 +27,20 @@ function submitHandler(event) {
             progressBarColor: '#fff',
           })
         );
-      }, delay);
-    } else {
-      setTimeout(() => {
-        console.log('error');
-        iziToast.error({
-          theme: 'dark',
-          icon: '',
-          message: `❌ Rejected promise in ${delay}ms`,
-          position: 'topRight',
-          messageColor: '#fff',
-          backgroundColor: '#ef4040',
-          progressBarColor: '#fff',
-        });
-      }, delay);
-    }
+      } else {
+        reject(
+          iziToast.error({
+            theme: 'dark',
+            icon: '',
+            message: `❌ Rejected promise in ${delay}ms`,
+            position: 'topRight',
+            messageColor: '#fff',
+            backgroundColor: '#ef4040',
+            progressBarColor: '#fff',
+          })
+        );
+      }
+    }, delay);
   });
 
   promise.then(success => success).catch(error => error);
